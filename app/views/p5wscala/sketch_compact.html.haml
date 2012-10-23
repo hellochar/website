@@ -1,0 +1,10 @@
+-content_for(:applet) do 
+  .row
+    .span8
+      = render 'p5wscala/applet', :sketch => sketch
+    .span4
+      .row
+        %h1= sketch.name.capitalize
+      .row(style='text-align:left')= sketch.text_left.html_safe if sketch.text_left
+      .row= sketch.text_right.html_safe if sketch.text_right
+      .row= sketch.html.html_safe if sketch.html

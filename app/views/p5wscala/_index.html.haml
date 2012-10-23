@@ -1,0 +1,12 @@
+.row.p5wscala
+  .span12
+    .section-header
+      %h1
+        p5wscala
+        %small Experiments with Processing in the Scala programming language for rapidly creating sketches and mockups.
+    - Sketch.where(:show => true).order("entry_date DESC").each_slice(4) do |arr|
+      .row.thumbnails
+        - arr.each do |sketch|
+          .span3
+            %ul
+              = render 'p5wscala/thumbnail', :sketch => sketch

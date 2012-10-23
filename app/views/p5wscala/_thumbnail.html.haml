@@ -1,0 +1,4 @@
+%a.thumbnail(href="/p5wscala/#{sketch.name}")
+  = image_tag sketch.picture
+  %p= sketch.entry_date.strftime("'%y")
+  %h4.sketch-name= sketch.name.capitalize

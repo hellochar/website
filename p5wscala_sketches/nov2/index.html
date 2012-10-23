@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <!-- charset must remain utf-8 to be handled properly by Processing -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+    <title>Nov2: Built with Processing</title>
+    <LINK REL="stylesheet" HREF="../../sketch.css" TYPE="text/css"/>
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="container">
+
+        <!-- This version plays nicer with older browsers,
+     but requires JavaScript to be enabled.
+     http://java.sun.com/javase/6/docs/technotes/guides/jweb/deployment_advice.html -->
+        <script type="text/javascript" src="http://www.java.com/js/deployJava.js"></script>
+        <script type="text/javascript">
+          var attributes ={code: 'daily/nov/Nov2', archive: 'Nov2.jar', width: 500, height: 500, image: 'loading.gif'};
+          var parameters = {"java_arguments": "-Djnlp.packEnabled=true" };
+          var version = '1.5';
+          deployJava.runApplet(attributes, parameters, version);
+        </script>
+        <noscript>
+          <div>
+            <!--[if !IE]> -->
+            <object classid="java:daily/nov/Nov2.class"
+                    type="application/x-java-applet"
+                    archive=Nov2.jar
+                    width=500 height=500
+                    standby="Loading Processing software...">
+
+                <param name="archive" value=Nov2.jar/>
+
+                <param name="mayscript" value="true"/>
+                <param name="scriptable" value="true"/>
+
+                <param name="image" value="loading.gif"/>
+                <param name="boxmessage" value="Loading Processing software..."/>
+                <param name="boxbgcolor" value="#FFFFFF"/>
+
+                <param name="test_string" value="outer"/>
+              <!--<![endif]-->
+
+              <!-- For more instructions on deployment,
+   or to update the CAB file listed here, see:
+   http://java.sun.com/javase/6/webnotes/family-clsid.html
+   http://java.sun.com/javase/6/webnotes/install/jre/autodownload.html -->
+              <object classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+                      codebase="http://java.sun.com/update/1.6.0/jinstall-6u20-windows-i586.cab"
+                      width=500 height=500
+                      standby="Loading Processing software...">
+
+                  <param name="code" value=daily/nov/Nov2/>
+                  <param name="archive" value=Nov2.jar/>
+
+                  <param name="mayscript" value="true"/>
+                  <param name="scriptable" value="true"/>
+
+                  <param name="image" value="loading.gif"/>
+                  <param name="boxmessage" value="Loading Processing software..."/>
+                  <param name="boxbgcolor" value="#FFFFFF"/>
+
+                  <param name="test_string" value="inner"/>
+
+                <p>
+                  <strong>
+                    This browser does not have a Java Plug-in.
+                      <br/>
+                    <a href="http://www.java.com/getjava" title="Download Java Plug-in">
+                      Get the latest Java Plug-in here.
+                    </a>
+                  </strong>
+                </p>
+
+              </object>
+
+              <!--[if !IE]> -->
+            </object>
+            <!--<![endif]-->
+
+          </div>
+        </noscript>
+
+      </div>
+
+      <div id="columns">
+        <div class="left column">
+          <h4>Keyboard controls</h4>
+          <pre></pre>
+        </div>
+
+        <div class="right column">
+          <h4>Mouse controls</h4>
+          <pre></pre>
+        </div>
+      </div>
+
+      <p>Source code:<a href=Nov2.scala>Nov2</a></p>
+
+      <p>Built with <a href="http://processing.org" title="Processing.org">Processing</a></p>
+      <p><a href="../..">Back to sketches</a></p>
+    </div>
+  </body>
+</html>

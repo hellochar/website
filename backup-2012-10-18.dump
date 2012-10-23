@@ -1,0 +1,168 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: zhangxiaohan; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO zhangxiaohan;
+
+--
+-- Name: sketches; Type: TABLE; Schema: public; Owner: zhangxiaohan; Tablespace: 
+--
+
+CREATE TABLE sketches (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    entry_date timestamp without time zone NOT NULL,
+    classpath character varying(255) NOT NULL,
+    width integer DEFAULT 800 NOT NULL,
+    height integer DEFAULT 600 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    text_left text,
+    text_right text,
+    html text,
+    show boolean DEFAULT true NOT NULL,
+    openprocessing_link character varying(255),
+    blog_link character varying(255)
+);
+
+
+ALTER TABLE public.sketches OWNER TO zhangxiaohan;
+
+--
+-- Name: sketches_id_seq; Type: SEQUENCE; Schema: public; Owner: zhangxiaohan
+--
+
+CREATE SEQUENCE sketches_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sketches_id_seq OWNER TO zhangxiaohan;
+
+--
+-- Name: sketches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zhangxiaohan
+--
+
+ALTER SEQUENCE sketches_id_seq OWNED BY sketches.id;
+
+
+--
+-- Name: sketches_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zhangxiaohan
+--
+
+SELECT pg_catalog.setval('sketches_id_seq', 20, true);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: zhangxiaohan
+--
+
+ALTER TABLE ONLY sketches ALTER COLUMN id SET DEFAULT nextval('sketches_id_seq'::regclass);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: zhangxiaohan
+--
+
+COPY schema_migrations (version) FROM stdin;
+20121009232916
+20121015092858
+20121018064941
+20121018070443
+\.
+
+
+--
+-- Data for Name: sketches; Type: TABLE DATA; Schema: public; Owner: zhangxiaohan
+--
+
+COPY sketches (id, name, entry_date, classpath, width, height, created_at, updated_at, text_left, text_right, html, show, openprocessing_link, blog_link) FROM stdin;
+11	jul27	2011-07-27 07:00:00	daily/Jul27	500	500	2012-10-15 07:34:32.442898	2012-10-18 06:52:09.051846	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	f	\N	\N
+4	dec01	2011-12-01 08:00:00	daily/dec/Dec01	800	600	2012-10-15 07:34:32.399896	2012-10-18 06:52:09.038846			\N	t	\N	\N
+5	dec02b	2011-12-02 20:00:00	daily.Dec02b	600	600	2012-10-15 07:34:32.416897	2012-10-18 07:15:25.219703	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre>'q' to switch between viewing the function ASTand viewing the function plot\r\nspace to generate a new random function\r\nwasd/arrow keys to move around\r\n-/= to zoom\r\n</pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre>scroll wheel to zoom\r\nMove the mouse from left to right to change the plot's brightness\r\n</pre>\r\n        </div>	\N	t	\N	\N
+6	jul08b	2011-07-08 19:00:00	daily/Jul08b	500	500	2012-10-15 07:34:32.420897	2012-10-18 07:15:25.186701	<div class="left column">\r\n    \t<h4>Keyboard controls</h4>\r\n    \t<pre>WASD to move (hold shift to move faster)\r\n'q'/'e' to change the terrain generator\r\n'1'/'3' to change the combiner function (only affects generators 4-7)\r\n'z'/'x' to make the grid bigger/smaller</pre>\r\n    </div>	<div class="right column">\r\n    \t<h4>Mouse controls</h4>\r\n    \t<pre>Button2 -&gt; Zoom\r\nButton3 -&gt; Translate frame\r\nShift+Button3 -&gt; Screen rotate\r\nButton1 -&gt; Rotate frame\r\nShift+Button1 -&gt; Zoom on region\r\nButton1 + 2 clicks -&gt; Align camera with world</pre>\r\n    </div>	\N	t	\N	\N
+7	jul12	2011-07-12 07:00:00	daily/Jul12	900	500	2012-10-15 07:34:32.425897	2012-10-18 06:52:09.047846	<div class="left column">\r\n                <h4>Controls</h4>\r\n                <pre>WASD/arrow keys to pan the camera\r\n+/- to zoom\r\nHit 'enter' after typing in a transform\r\nClick and drag to draw shapes\r\nScroll wheel to zoom</pre>\r\n              </div>	<div class="right column">\r\n\t\t  <h4>How to specify transformations</h4>\r\n                <pre>"T(tx, ty)" represents translation.\r\n"S(s)" represents scaling.\r\n"R(theta)" represents clockwise rotation (specified in degrees).\r\n"X(shearX)" represents shearing in the X direction.\r\n"Y(shearY)" represents shearing in the Y direction.\r\n\r\nYou can combine matrices together with matrix multiplication (using "m1 * m2") \r\n     or by-element addition (using "m1 + m2").\r\n</pre>\r\n<h5>Examples</h5>\r\n<pre>\r\nT(1, 1)*S(1.5) will first translate 1, 1 and then scale 1.5.\r\nR(90)*T(1.25, 0) will rotate 90 degrees and then translate 1.25 in the x direction.</pre>\r\n              </div>	\N	t	\N	\N
+13	nov2	2011-11-02 07:00:00	daily/nov/Nov2	500	500	2012-10-15 07:34:32.451899	2012-10-18 06:52:09.049846	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	t	\N	\N
+9	jul20	2011-07-20 07:00:00	daily/Jul20	1024	200	2012-10-15 07:34:32.434898	2012-10-18 06:52:09.045846	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	f	\N	\N
+14	nov2b	2011-11-02 19:00:00	daily/nov/Nov2b	500	500	2012-10-15 07:34:32.455899	2012-10-18 07:15:25.222703	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	t	\N	\N
+10	jul21b	2011-07-21 19:00:00	daily/Jul21b	500	500	2012-10-15 07:34:32.438898	2012-10-18 07:15:25.224703	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	t	\N	\N
+2	aug06	2011-08-06 07:00:00	daily/Aug06	600	600	2012-10-15 07:34:32.390895	2012-10-18 06:52:08.996843	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre>q/w - Switch between wireframe/mesh drawing\r\na/s - Switch between spherical/planar/torodial rendering\r\nz/x - Switch between white/starry background\r\nn - generate random world\r\ng - toggle axes (only visible in planar/torodial mode)</pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre>left click+drag to rotate\r\nmouse-wheel or right click+drag to zoom\r\ndoubleclick to reset camera\r\n\r\n\r\n</pre>\r\n        </div>	\N	t	\N	\N
+3	aug12	2011-08-12 07:00:00	daily/aug/Aug12	500	500	2012-10-15 07:34:32.395896	2012-10-18 06:52:09.033845	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre>\r\nPress ALL the keys!\r\n</pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre>\r\nMove ALL the mice!\r\n</pre>\r\n        </div>	\N	f	\N	\N
+16	oct23	2011-10-23 07:00:00	daily/oct/Oct23	500	500	2012-10-15 07:34:32.4639	2012-10-18 06:52:09.064847	<div class="left column">\r\n          <h4>Controls</h4>\r\n          <pre>Left-drag to rotate\r\n\r\nRight-drag to zoom\r\nMousewheel to zoom\r\n\r\nMousewheel-drag to pan\r\nLeft-and-right-drag to pan\r\n\r\nDouble-click to reset the camera\r\n</pre>\r\n        </div>	<div class="right column">\r\n          <h4>Note</h4>\r\n          <pre>The GUI handles are located in a separate window that should pop up.\r\nIf you accidentally close the window, just refresh the page.\r\nIf the controls won't respond, try just tapping "alt".\r\n</pre>\r\n        </div>	\N	t	\N	\N
+17	oct29	2011-10-29 07:00:00	daily/oct/Oct29	500	500	2012-10-15 07:34:32.4679	2012-10-18 06:52:09.069847	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	t	\N	\N
+18	sep10	2011-09-10 07:00:00	daily/Sep10	500	500	2012-10-15 07:34:32.4729	2012-10-18 06:52:09.072848	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	t	\N	\N
+20	sep25	2011-09-25 07:00:00	daily/Sep25	526	518	2012-10-15 07:34:32.481901	2012-10-18 06:52:09.074848			\N	t	\N	\N
+12	mar01b	2012-03-01 20:00:00	daily.Mar01b	600	600	2012-10-15 07:34:32.446899	2012-10-18 07:15:25.226703	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	t	\N	\N
+15	oct22	2011-10-22 07:00:00	daily/oct/Oct22	500	500	2012-10-15 07:34:32.459899	2012-10-18 06:52:09.060847	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre></pre>\r\n        </div>	<div class="right column">\r\n          <h4>Mouse controls</h4>\r\n          <pre></pre>\r\n        </div>	\N	f	\N	\N
+19	sep12	2011-09-12 07:00:00	daily/Sep12	500	500	2012-10-15 07:34:32.4769	2012-10-18 06:52:09.078848	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre>Type in a function of x into the textfield to see it plotted.\r\nWhen not typing, use the arrow keys or WASD to move around.\r\nUse -/(= or +) to zoom out/in</pre>\r\n        </div>	<div class="right column">\r\n          <h4>Function Syntax</h4>\r\n          <pre>The expression parser understands the following things:\r\nNumbers: 4, -6.9, 1e+4, 0.13259\r\nArithmetic: +, -, *, /, ^\r\nConstants: "PI" and "e"\r\nFunctions: cos(), sin(), tan(), log(), sqrt()\r\n\r\nYou may put spaces between terms, group them with parentheses, \r\nor negate them with a "-" before the term.\r\n</pre>\r\n        </div>	\N	t	\N	\N
+1	aug03	2011-08-03 07:00:00	daily/Aug03	500	500	2012-10-15 07:34:32.359894	2012-10-18 06:52:09.080848	<div class="left column">\r\n          <h4>Keyboard controls</h4>\r\n          <pre>'b' - toggle blur\r\n'p' - toggle posterize\r\nspace - pause\r\n'r' - reset\r\n'q' - next group\r\n'g' - toggle greater than/less than</pre>\r\n        </div>	<div class="right column">\r\n          <h4>What's goin' on eh?</h4>\r\n\t\t<p>There are things called "Runner"s that move in straight lines, leaving some sort of color behind them until they hit either the edge of the applet, \r\nor they hit a color that is within a color distance threshold to their own color. When that happens, the Runner chooses a random direction and tries again. If that fails,\r\nthe Runner teleports to a random location on the screen and tries again. If THAT fails 100 times, the Runner does nothing until the next frame.<br><br>\r\nYou may choose to apply a blur and/or posterize filter on each frame; interesting figures and combinations arise from their interplay with Runners.\r\n"Next group" toggles through different groups of runners (black only, black/white, 5 HSB runners). <br><br>\r\nThe gt/lt toggle defines whether Runners can only move through colors that are <b>greater than/less than</b> the color threshold. e.g. If the distance threshold is .80, \r\nthen a black Runner can only move on colors that are:<br>\r\n     More than .8 distance from black for "gt".<br>\r\n     Less than .8 distance from black for "lt".<br>\r\nIn general, "gt" means Runners will hit their own color, and "lt" means Runners will hit other colors.<br><br>\r\nThe color distance metric is somewhat arbitrary; here is a chart showing color distances used in the sketch:<br></p>\n<table border="0" cellpadding="0" cellspacing="0" width="576" style="border-collapse:\r\n collapse;table-layout:fixed;width:432pt">\n<col width="64" span="9" style="width:48pt">\n<tr height="20" style="height:15.0pt">\n<td height="20" width="64" style="height:15.0pt;width:48pt"></td>\r\n  <td class="xl66" width="64" style="width:48pt">Black</td>\r\n  <td class="xl65" width="64" style="width:48pt">Gray</td>\r\n  <td width="64" style="width:48pt">White</td>\r\n  <td class="xl67" width="64" style="width:48pt">Hue 0.0</td>\r\n  <td class="xl68" width="64" style="width:48pt">Hue 0.2</td>\r\n  <td class="xl69" width="64" style="width:48pt">Hue 0.4</td>\r\n  <td class="xl70" width="64" style="width:48pt">Hue 0.6</td>\r\n  <td class="xl71" width="64" style="width:48pt">Hue 0.8</td>\r\n </tr>\n<tr height="20" style="height:15.0pt">\n<td height="20" class="xl66" style="height:15.0pt">Black</td>\r\n  <td align="right">0</td>\r\n  <td align="right">0.866025</td>\r\n  <td align="right">1.732051</td>\r\n  <td align="right">1</td>\r\n  <td align="right">1.280625</td>\r\n  <td align="right">1.077033</td>\r\n  <td align="right">1.077033</td>\r\n  <td align="right">1.280625</td>\r\n </tr>\n<tr height="20" style="height:15.0pt">\n<td height="20" class="xl65" style="height:15.0pt">Gray</td>\r\n  <td align="right">0.866025</td>\r\n  <td align="right">0</td>\r\n  <td align="right">0.866025</td>\r\n  <td align="right">0.866025</td>\r\n  <td align="right">0.768115</td>\r\n  <td align="right">0.714143</td>\r\n  <td align="right">0.714143</td>\r\n  <td align="right">0.768114</td>\r\n </tr>\n<tr height="20" style="height:15.0pt">\n<td height="20" style="height:15.0pt">White</td>\r\n  <td align="right">1.732051</td>\r\n  <td align="right">0.866025</td>\r\n  <td align="right">0</td>\r\n  <td align="right">1.414214</td>\r\n  <td align="right">1.019804</td>\r\n  <td align="right">1.16619</td>\r\n  <td align="right">1.16619</td>\r\n  <td align="right">1.019804</td>\r\n </tr>\n<tr height="20" style="height:15.0pt">\n<td height="20" class="xl67" style="height:15.0pt">Hue 0.0</td>\r\n  <td align="right">1</td>\r\n  <td align="right">0.866025</td>\r\n  <td align="right">1.414214</td>\r\n  <td align="right">0</td>\r\n  <td align="right">1.019804</td>\r\n  <td align="right">1.469694</td>\r\n  <td align="right">1.469694</td>\r\n  <td align="right">1.019804</td>\r\n </tr>\n<tr height="20" style="height:15.0pt">\n<td height="20" class="xl68" style="height:15.0pt">Hue 0.2</td>\r\n  <td align="right">1.280625</td>\r\n  <td align="right">0.768115</td>\r\n  <td align="right">1.019804</td>\r\n  <td align="right">1.019804</td>\r\n  <td align="right">0</td>\r\n  <td align="right">0.894427</td>\r\n  <td align="right">1.414214</td>\r\n  <td align="right">1.414214</td>\r\n </tr>\n<tr height="20" style="height:15.0pt">\n<td height="20" class="xl69" style="height:15.0pt">Hue 0.4</td>\r\n  <td align="right">1.077033</td>\r\n  <td align="right">0.714143</td>\r\n  <td align="right">1.16619</td>\r\n  <td align="right">1.469694</td>\r\n  <td align="right">0.894427</td>\r\n  <td align="right">0</td>\r\n  <td align="right">0.848528</td>\r\n  <td align="right">1.414213</td>\r\n </tr>\n<tr height="20" style="height:15.0pt">\n<td height="20" class="xl70" style="height:15.0pt">Hue 0.6</td>\r\n  <td align="right">1.077033</td>\r\n  <td align="right">0.714143</td>\r\n  <td align="right">1.16619</td>\r\n  <td align="right">1.469694</td>\r\n  <td align="right">1.414214</td>\r\n  <td align="right">0.848528</td>\r\n  <td align="right">0</td>\r\n  <td align="right">0.894427</td>\r\n </tr>\n<tr height="20" style="height:15.0pt">\n<td height="20" class="xl71" style="height:15.0pt">Hue 0.8</td>\r\n  <td align="right">1.280625</td>\r\n  <td align="right">0.768114</td>\r\n  <td align="right">1.019804</td>\r\n  <td align="right">1.019804</td>\r\n  <td align="right">1.414214</td>\r\n  <td align="right">1.414213</td>\r\n  <td align="right">0.894427</td>\r\n  <td align="right">0</td>\r\n </tr>\n<tr height="0" style="display:none">\n<td width="64" style="width:48pt"></td>\r\n  <td width="64" style="width:48pt"></td>\r\n  <td width="64" style="width:48pt"></td>\r\n  <td width="64" style="width:48pt"></td>\r\n  <td width="64" style="width:48pt"></td>\r\n  <td width="64" style="width:48pt"></td>\r\n  <td width="64" style="width:48pt"></td>\r\n  <td width="64" style="width:48pt"></td>\r\n  <td width="64" style="width:48pt"></td>\r\n </tr>\n</table>\n<br>\n</div>	<style>\r\ntr\r\n\t{mso-height-source:auto;}\r\ncol\r\n\t{mso-width-source:auto;}\r\nbr\r\n\t{mso-data-placement:same-cell;}\r\n.style0\r\n\t{mso-number-format:General;\r\n\ttext-align:general;\r\n\tvertical-align:bottom;\r\n\twhite-space:nowrap;\r\n\tmso-rotate:0;\r\n\tmso-background-source:auto;\r\n\tmso-pattern:auto;\r\n\tcolor:black;\r\n\tfont-size:11.0pt;\r\n\tfont-weight:400;\r\n\tfont-style:normal;\r\n\ttext-decoration:none;\r\n\tfont-family:Calibri, sans-serif;\r\n\tmso-font-charset:0;\r\n\tborder:none;\r\n\tmso-protection:locked visible;\r\n\tmso-style-name:Normal;\r\n\tmso-style-id:0;}\r\ntd\r\n\t{mso-style-parent:style0;\r\n\tpadding-top:1px;\r\n\tpadding-right:1px;\r\n\tpadding-left:1px;\r\n\tmso-ignore:padding;\r\n\tcolor:black;\r\n\tfont-size:11.0pt;\r\n\tfont-weight:400;\r\n\tfont-style:normal;\r\n\ttext-decoration:none;\r\n\tfont-family:Calibri, sans-serif;\r\n\tmso-font-charset:0;\r\n\tmso-number-format:General;\r\n\ttext-align:general;\r\n\tvertical-align:bottom;\r\n\tborder:none;\r\n\tmso-background-source:auto;\r\n\tmso-pattern:auto;\r\n\tmso-protection:locked visible;\r\n\twhite-space:nowrap;\r\n\tmso-rotate:0;}\r\n.xl65\r\n\t{mso-style-parent:style0;\r\n\tbackground:#EEECE1;\r\n\tmso-pattern:black none;}\r\n.xl66\r\n\t{mso-style-parent:style0;\r\n\tcolor:white;\r\n\tbackground:black;\r\n\tmso-pattern:black none;}\r\n.xl67\r\n\t{mso-style-parent:style0;\r\n\tbackground:red;\r\n\tmso-pattern:black none;}\r\n.xl68\r\n\t{mso-style-parent:style0;\r\n\tbackground:#FAFF00;\r\n\tmso-pattern:black none;}\r\n.xl69\r\n\t{mso-style-parent:style0;\r\n\tbackground:#00FF64;\r\n\tmso-pattern:black none;}\r\n.xl70\r\n\t{mso-style-parent:style0;\r\n\tbackground:#0065FF;\r\n\tmso-pattern:black none;}\r\n.xl71\r\n\t{mso-style-parent:style0;\r\n\tbackground:#CC00FF;\r\n\tmso-pattern:black none;}\r\n\r\n</style>	t	\N	\N
+\.
+
+
+--
+-- Name: sketches_pkey; Type: CONSTRAINT; Schema: public; Owner: zhangxiaohan; Tablespace: 
+--
+
+ALTER TABLE ONLY sketches
+    ADD CONSTRAINT sketches_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: zhangxiaohan; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

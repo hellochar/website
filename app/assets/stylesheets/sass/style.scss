@@ -1,0 +1,94 @@
+// Remove styling from links so they look a bit more normal
+a, a:visited, a:hover, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+// Give some breathing room to the rows
+.row {
+  margin-top: 10px;
+}
+
+.page-header {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0px;
+  a {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .nav {
+    display: inline-block;
+    vertical-align: middle;
+    a {
+      padding: 10px 25px;
+      background: #ccc;
+    }
+  }
+  a.name {
+    font-size: 400%;
+    line-height: 100%;
+    font-weight: bold;
+    padding-right: 15px;
+  }
+}
+// The section header is at the top of each big project in the front page
+.section-header {
+  border-bottom: 1px solid #eee; 
+}
+
+// The about-me is a little paragraph at the top of the page
+.about-me {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 200%;
+  text-align: justify;
+}
+
+// A little thing that pops up on the left-side of the screen
+$inset-top: 140px;
+.left-inset {
+  float: left;
+  left: 0px;
+  top: $inset-top;
+  a.thumbnail {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: none;
+  }
+}
+.right-inset {
+  float: right;
+  right: 0px;
+  top: $inset-top;
+  a.thumbnail {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: none;
+  }
+}
+
+// Styling for the custom background
+#bg {
+  display: inline;
+  position: absolute;
+  left: 0px;
+  top: 40px;
+  z-index: -1;
+  background: -webkit-linear-gradient(top, rgba(255,255,255,.5), rgba(180,165,150,.3), rgba(32, 18, 12, .1));
+} 
+
+
+.p5wscala {
+  .thumbnail {
+    img, p, .sketch-name {
+      display: inline-block;
+    }
+    img {
+      width: 60px;
+    }
+    h2 {
+      margin: 0px;
+    }
+  }
+}

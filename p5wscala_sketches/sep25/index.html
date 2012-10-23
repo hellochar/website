@@ -1,0 +1,157 @@
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <!-- charset must remain utf-8 to be handled properly by Processing -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
+
+    <title>Sep25: Built with Processing</title>
+    <LINK TYPE="text/css" HREF="../../sketch.css" REL="stylesheet"></LINK>
+	<style type="text/css">
+	body {
+		background-color:#fdfdfd;
+	}
+	</style>
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="container" style="float:left; margin:5px;">
+
+        <!-- This version plays nicer with older browsers,
+     but requires JavaScript to be enabled.
+     http://java.sun.com/javase/6/docs/technotes/guides/jweb/deployment_advice.html -->
+        <script type="text/javascript" src="http://www.java.com/js/deployJava.js"></script>
+        <script type="text/javascript">
+          var attributes =
+          {code: 'daily/Sep25', archive: 'Sep25.jar', width: 526, height: 518, image: 'loading.gif'};
+          var parameters = {"java_arguments": "-Djnlp.packEnabled=true" };
+          var version = '1.5';
+          deployJava.runApplet(attributes, parameters, version);
+        </script>
+        <noscript>
+          <div>
+            <!--[if !IE]> -->
+            <object width="526" standby="Loading Processing software..." type="application/x-java-applet" archive="Sep25.jar" classid="java:daily/Sep25.class" height="518">
+
+                <param name="archive" value="Sep25.jar"></param>
+
+                <param name="mayscript" value="true"></param>
+                <param name="scriptable" value="true"></param>
+
+                <param name="image" value="loading.gif"></param>
+                <param name="boxmessage" value="Loading Processing software..."></param>
+                <param name="boxbgcolor" value="#FFFFFF"></param>
+
+                <param name="test_string" value="outer"></param>
+              <!--<![endif]-->
+
+              <!-- For more instructions on deployment,
+   or to update the CAB file listed here, see:
+   http://java.sun.com/javase/6/webnotes/family-clsid.html
+   http://java.sun.com/javase/6/webnotes/install/jre/autodownload.html -->
+              <object width="526" codebase="http://java.sun.com/update/1.6.0/jinstall-6u20-windows-i586.cab" standby="Loading Processing software..." classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" height="518">
+
+                  <param name="code" value="daily/Sep25"></param>
+                  <param name="archive" value="Sep25.jar"></param>
+
+                  <param name="mayscript" value="true"></param>
+                  <param name="scriptable" value="true"></param>
+
+                  <param name="image" value="loading.gif"></param>
+                  <param name="boxmessage" value="Loading Processing software..."></param>
+                  <param name="boxbgcolor" value="#FFFFFF"></param>
+
+                  <param name="test_string" value="inner"></param>
+
+                <p>
+                  <strong>
+                    This browser does not have a Java Plug-in.
+                      <br></br>
+                    <a title="Download Java Plug-in" href="http://www.java.com/getjava">
+                      Get the latest Java Plug-in here.
+                    </a>
+                  </strong>
+                </p>
+
+              </object>
+
+              <!--[if !IE]> -->
+            </object>
+            <!--<![endif]-->
+
+          </div>
+        </noscript>
+	<div id="closer">
+		<p>Source code:<a href="Sep25.scala">Sep25</a>, <a href="Sep25.scala.html">formatted</a></p>
+
+  		<p>Built with <a title="Processing.org" href="http://processing.org">Processing</a></p>
+	       <p><a href="../..">Back to sketches</a></p>
+	</div>
+
+      </div> <!-- end of left applet + closer -->
+
+	<div style="width:50%; right:0px; float:right; margin:5px;">
+
+          <h2>Controls</h2>
+          <p style="font-family:courier">Click and drag, use WASD or arrow keys to move the Argand diagram<br />
+Press +/- or use the scroll wheel to zoom into the Argand diagram<br />
+Use the scroll wheel in the cosine and sine graphs to scale in the time direction <br />
+
+          <h2>Expression syntax</h2>
+          <p style="font-family:courier">
+The expression parser understands the following things:<br />
+Numbers: 4, -6.9, 1e+4, 0.13259<br />
+Variables: use "n" to refer to the current phasor index<br />
+Arithmetic: +, -, *, /, ^<br />
+Constants: "PI/Pi/pi" and "e"<br />
+Functions: cos(), sin(), tan(), log(), sqrt()<br />
+<br />
+
+You may put spaces between terms, group them with parentheses, <br />
+or negate them with a "-" before the term.<br />
+</p>
+
+	<h2>What's going on?</h2>
+	<div style="font-size:13px;">
+	<span style="color:#FF9A00;">The yellow graph shows the Real (cosine)	component.</span> <br />
+	<span style="color:#FF0000;">The red graph shows the Imaginary (sine) component.</span> <br />
+	<span style="color:#0D56A6;">The blueish diagram shows the total phasor.</span> <br /> <br />
+	This applet adds phasors as they move through time. Each phasor has an index N which determines its amplitude, frequency and phase. 
+	The applet starts at the first index (N = 1), calculates its phasor's magnitude and angle, and draws it. It moves
+	onto the next phasor (N = 2), calculates its magnitude and phase, and draws it off of the previous one. It repeats until some upper bound specified
+	by the "How Many" number.<br/> <br />
+
+	Here are some interesting graphs to plot: <br />
+	<div style="float:left; margin-left:0px; margin-bottom:40px;">
+		<br /><h5><a href="http://en.wikipedia.org/wiki/Sawtooth_wave">Sawtooth Wave</a></h5>
+		Amplitude: 1/n<br />
+		Frequency: n<br />
+		Phase: 0<br />
+	</div>
+
+	<div style="float:left; margin-left:15px;">
+		<br /><h5><a href="http://en.wikipedia.org/wiki/Triangle_wave">Triangle Wave</a></h5>
+		Amplitude: 1/(2n-1)^2<br />
+		Frequency: 2n-1<br />
+		Phase: n*PI<br />
+	</div>
+
+	<div style="float:left; margin-left:15px;">
+		<br /><h5><a href="http://en.wikipedia.org/wiki/Square_wave">Square Wave</a></h5>
+		Amplitude: 1/(2n-1)<br />
+		Frequency: 2n-1<br />
+		Phase: 0<br />
+	</div>
+
+	<div style="float:left; margin-left:15px;">
+		<br /><h5><a href="http://en.wikipedia.org/wiki/Euler_spiral">Euler spiral</a></h5>
+		Amplitude: 1<br />
+		Frequency: 0<br />
+		Phase: .01n^2<br />
+		How many: 100+<br />
+	</div>
+	</div> <!-- end font-size:16 -->
+
+	</div> <!-- end float right part -->
+    </div> <!-- end content -->
+  </body>
+</html>

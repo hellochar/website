@@ -1,0 +1,336 @@
+<html>
+<head>
+<title>Jul12.scala</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+Jul12.scala</FONT>
+</center></TD></TR></TABLE>
+<pre>
+
+<a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">daily 
+<a name="l2"><span class="ln">2    </span></a> 
+<a name="l3"><span class="ln">3    </span></a></span><span class="s2">/** 
+<a name="l4"><span class="ln">4    </span></a> * Created by IntelliJ IDEA. 
+<a name="l5"><span class="ln">5    </span></a> * User: hellochar 
+<a name="l6"><span class="ln">6    </span></a> * Date: 7/12/11 
+<a name="l7"><span class="ln">7    </span></a> * Time: 2:38 PM 
+<a name="l8"><span class="ln">8    </span></a> */</span><span class="s1"> 
+<a name="l9"><span class="ln">9    </span></a> 
+<a name="l10"><span class="ln">10   </span></a></span><span class="s0">import </span><span class="s1">processing.core._ 
+<a name="l11"><span class="ln">11   </span></a></span><span class="s0">import </span><span class="s1">util.parsing.combinator.JavaTokenParsers 
+<a name="l12"><span class="ln">12   </span></a></span><span class="s0">import </span><span class="s1">javax.swing.JOptionPane 
+<a name="l13"><span class="ln">13   </span></a></span><span class="s0">import </span><span class="s1">controlP5._ 
+<a name="l14"><span class="ln">14   </span></a></span><span class="s0">import </span><span class="s1">zhang.{Methods, Camera} 
+<a name="l15"><span class="ln">15   </span></a></span><span class="s0">import </span><span class="s1">org.zhang.lib.misc.{TravList, Vec2} 
+<a name="l16"><span class="ln">16   </span></a> 
+<a name="l17"><span class="ln">17   </span></a></span><span class="s0">class </span><span class="s1">Jul12 </span><span class="s0">extends </span><span class="s1">PApplet </span><span class="s0">with </span><span class="s1">NameApplet { 
+<a name="l18"><span class="ln">18   </span></a>  </span><span class="s0">import </span><span class="s1">PConstants._; </span><span class="s0">import </span><span class="s1">PApplet._ 
+<a name="l19"><span class="ln">19   </span></a>   
+<a name="l20"><span class="ln">20   </span></a>  </span><span class="s0">implicit def </span><span class="s1">v22pv2(v:Vec2) = </span><span class="s0">new </span><span class="s1">PVector(v.x, v.y) 
+<a name="l21"><span class="ln">21   </span></a> 
+<a name="l22"><span class="ln">22   </span></a>  </span><span class="s2">/** 
+<a name="l23"><span class="ln">23   </span></a>  EBNF grammar. Should support creation of transform, rotate, scale, (and maybe shearX/Y later) matricies, and be able to combine them with + and *. 
+<a name="l24"><span class="ln">24   </span></a>  for the future: Arbitrary 3x2 matricies should be buildable 
+<a name="l25"><span class="ln">25   </span></a> 
+<a name="l26"><span class="ln">26   </span></a>  Expr ::= Term { &quot;+&quot; Term } 
+<a name="l27"><span class="ln">27   </span></a>  Term ::= Matr { &quot;*&quot; Matr } 
+<a name="l28"><span class="ln">28   </span></a>  Matr ::= MatrLit | { &quot;(&quot; Expr &quot;)&quot; } 
+<a name="l29"><span class="ln">29   </span></a>  MatrLit ::= T(num, num) | R(num) | S(num) | X(num) | Y(num) | M(num, num, num, num, num, num) 
+<a name="l30"><span class="ln">30   </span></a>  num  ::= any float parsable by Float.parseFloat() 
+<a name="l31"><span class="ln">31   </span></a>  */</span><span class="s1"> 
+<a name="l32"><span class="ln">32   </span></a>  </span><span class="s0">object </span><span class="s1">MatrixParser </span><span class="s0">extends </span><span class="s1">JavaTokenParsers { 
+<a name="l33"><span class="ln">33   </span></a> 
+<a name="l34"><span class="ln">34   </span></a>    </span><span class="s2">//Parse with failure</span><span class="s1"> 
+<a name="l35"><span class="ln">35   </span></a>    </span><span class="s0">def </span><span class="s1">parse(s:String) = parseAll(expr, s) </span><span class="s0">match </span><span class="s1">{ 
+<a name="l36"><span class="ln">36   </span></a>      </span><span class="s0">case </span><span class="s1">p: NoSuccess =&gt; Left(p.msg) 
+<a name="l37"><span class="ln">37   </span></a>      </span><span class="s0">case </span><span class="s1">p: Success[PMatrix2D] =&gt; Right((p.get, s)) 
+<a name="l38"><span class="ln">38   </span></a>    } 
+<a name="l39"><span class="ln">39   </span></a> 
+<a name="l40"><span class="ln">40   </span></a>    </span><span class="s0">private def </span><span class="s1">byElementSum(m1:PMatrix2D, m2:PMatrix2D) = {  </span><span class="s2">//This implements a by-element sum of two PMatrix2Ds</span><span class="s1"> 
+<a name="l41"><span class="ln">41   </span></a>      m1.set(m1.get(</span><span class="s0">null</span><span class="s1">).zip(m2.get(</span><span class="s0">null</span><span class="s1">)).map{ </span><span class="s0">case </span><span class="s1">(a, b) =&gt; a + b}); m1; 
+<a name="l42"><span class="ln">42   </span></a>    } 
+<a name="l43"><span class="ln">43   </span></a> 
+<a name="l44"><span class="ln">44   </span></a>    </span><span class="s0">def </span><span class="s1">expr: Parser[PMatrix2D] = (term ~ rep(</span><span class="s3">&quot;+&quot; </span><span class="s1">~ term)) ^^ { </span><span class="s0">case </span><span class="s1">m~list =&gt; list.foldLeft(m) { 
+<a name="l45"><span class="ln">45   </span></a>      </span><span class="s0">case </span><span class="s1">(accum, </span><span class="s3">&quot;+&quot;</span><span class="s1">~next) =&gt; byElementSum(accum, next) 
+<a name="l46"><span class="ln">46   </span></a>    }} 
+<a name="l47"><span class="ln">47   </span></a>    </span><span class="s0">def </span><span class="s1">term: Parser[PMatrix2D] = (matLiteral ~ rep(</span><span class="s3">&quot;*&quot; </span><span class="s1">~ matLiteral)) ^^ { </span><span class="s0">case </span><span class="s1">m~list =&gt; list.foldLeft(m){ 
+<a name="l48"><span class="ln">48   </span></a>      </span><span class="s0">case </span><span class="s1">(accum, </span><span class="s3">&quot;*&quot;</span><span class="s1">~next) =&gt; {accum.apply(next); accum} 
+<a name="l49"><span class="ln">49   </span></a>    }} 
+<a name="l50"><span class="ln">50   </span></a>    </span><span class="s0">def </span><span class="s1">matLiteral: Parser[PMatrix2D] = { 
+<a name="l51"><span class="ln">51   </span></a> 
+<a name="l52"><span class="ln">52   </span></a>      </span><span class="s0">def </span><span class="s1">mkMatrix(f:PMatrix2D =&gt; Unit) = {</span><span class="s0">val </span><span class="s1">k = </span><span class="s0">new </span><span class="s1">PMatrix2D(); f(k); k} 
+<a name="l53"><span class="ln">53   </span></a> 
+<a name="l54"><span class="ln">54   </span></a>      </span><span class="s2">/** 
+<a name="l55"><span class="ln">55   </span></a>      * Single parameter literal. 
+<a name="l56"><span class="ln">56   </span></a>      */</span><span class="s1"> 
+<a name="l57"><span class="ln">57   </span></a>      </span><span class="s0">def </span><span class="s1">spl(prefix:String, func:PMatrix2D =&gt; (Float =&gt; Unit)) = ((prefix+</span><span class="s3">&quot;(&quot;</span><span class="s1">)~num~</span><span class="s3">&quot;)&quot;</span><span class="s1">) ^^ { 
+<a name="l58"><span class="ln">58   </span></a>        </span><span class="s0">case </span><span class="s1">pre~num~</span><span class="s3">&quot;)&quot; </span><span class="s1">=&gt; mkMatrix(matrix =&gt; func(matrix)(num))} 
+<a name="l59"><span class="ln">59   </span></a> 
+<a name="l60"><span class="ln">60   </span></a>      </span><span class="s0">def </span><span class="s1">trans = (</span><span class="s3">&quot;T(&quot;</span><span class="s1">~num~</span><span class="s3">&quot;,&quot;</span><span class="s1">~num~</span><span class="s3">&quot;)&quot;</span><span class="s1">) ^^ {</span><span class="s0">case </span><span class="s3">&quot;T(&quot;</span><span class="s1">~numX~</span><span class="s3">&quot;,&quot;</span><span class="s1">~numY~</span><span class="s3">&quot;)&quot; </span><span class="s1">=&gt; mkMatrix(_.translate(numX, numY))} 
+<a name="l61"><span class="ln">61   </span></a>      </span><span class="s0">def </span><span class="s1">rot = spl(</span><span class="s3">&quot;R&quot;</span><span class="s1">, m =&gt; x =&gt; m.rotate(radians(x))) 
+<a name="l62"><span class="ln">62   </span></a>      </span><span class="s0">def </span><span class="s1">scl = spl(</span><span class="s3">&quot;S&quot;</span><span class="s1">, _.scale _) 
+<a name="l63"><span class="ln">63   </span></a>      </span><span class="s0">def </span><span class="s1">sX = spl(</span><span class="s3">&quot;X&quot;</span><span class="s1">, _.shearX _) 
+<a name="l64"><span class="ln">64   </span></a>      </span><span class="s0">def </span><span class="s1">sY = spl(</span><span class="s3">&quot;Y&quot;</span><span class="s1">, _.shearY _) 
+<a name="l65"><span class="ln">65   </span></a> 
+<a name="l66"><span class="ln">66   </span></a>      trans | rot | scl | sX | sY 
+<a name="l67"><span class="ln">67   </span></a>    } 
+<a name="l68"><span class="ln">68   </span></a> 
+<a name="l69"><span class="ln">69   </span></a>    </span><span class="s0">def </span><span class="s1">num: Parser[Float] = floatingPointNumber ^^ (_.toFloat) 
+<a name="l70"><span class="ln">70   </span></a>  } 
+<a name="l71"><span class="ln">71   </span></a> 
+<a name="l72"><span class="ln">72   </span></a>  </span><span class="s0">var </span><span class="s1">S: Set[Geometry] = Set(); </span><span class="s2">//Set of geometries</span><span class="s1"> 
+<a name="l73"><span class="ln">73   </span></a>  </span><span class="s0">var </span><span class="s1">T: Set[PMatrix2D] = Set(); </span><span class="s2">//Set of transformations</span><span class="s1"> 
+<a name="l74"><span class="ln">74   </span></a> 
+<a name="l75"><span class="ln">75   </span></a> 
+<a name="l76"><span class="ln">76   </span></a>  </span><span class="s0">var </span><span class="s1">myCam:Camera = _ 
+<a name="l77"><span class="ln">77   </span></a>  </span><span class="s0">var </span><span class="s1">cp5:ControlP5 = _ 
+<a name="l78"><span class="ln">78   </span></a> 
+<a name="l79"><span class="ln">79   </span></a>  </span><span class="s0">def </span><span class="s1">initGui() { 
+<a name="l80"><span class="ln">80   </span></a>    cp5 = </span><span class="s0">new </span><span class="s1">ControlP5(</span><span class="s0">this</span><span class="s1">) 
+<a name="l81"><span class="ln">81   </span></a>    cp5.setAutoDraw(</span><span class="s0">false</span><span class="s1">) 
+<a name="l82"><span class="ln">82   </span></a> 
+<a name="l83"><span class="ln">83   </span></a>    </span><span class="s0">def </span><span class="s1">addAction[A](c: Controller, action: =&gt; A) { 
+<a name="l84"><span class="ln">84   </span></a>      c.addListener(</span><span class="s0">new </span><span class="s1">ControlListener() { 
+<a name="l85"><span class="ln">85   </span></a>        </span><span class="s0">def </span><span class="s1">controlEvent(theEvent: ControlEvent) { 
+<a name="l86"><span class="ln">86   </span></a>          action 
+<a name="l87"><span class="ln">87   </span></a>        } 
+<a name="l88"><span class="ln">88   </span></a>      }) 
+<a name="l89"><span class="ln">89   </span></a>    } 
+<a name="l90"><span class="ln">90   </span></a> 
+<a name="l91"><span class="ln">91   </span></a>    </span><span class="s0">val </span><span class="s1">tfield = cp5.addTextfield(</span><span class="s3">&quot;Enter transform&quot;</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">200</span><span class="s1">, </span><span class="s4">16</span><span class="s1">); 
+<a name="l92"><span class="ln">92   </span></a>    addAction(tfield, tryAddTransform(tfield.stringValue())) 
+<a name="l93"><span class="ln">93   </span></a> 
+<a name="l94"><span class="ln">94   </span></a>    </span><span class="s0">val </span><span class="s1">resetGeo = cp5.addButton(</span><span class="s3">&quot;Reset Geometry&quot;</span><span class="s1">);         addAction(resetGeo, {resetGeometry()}); 
+<a name="l95"><span class="ln">95   </span></a>    </span><span class="s0">val </span><span class="s1">resetTrans = cp5.addButton(</span><span class="s3">&quot;Reset Transforms&quot;</span><span class="s1">);     addAction(resetTrans, { resetTransforms() }) 
+<a name="l96"><span class="ln">96   </span></a>    </span><span class="s0">val </span><span class="s1">iterateButton = cp5.addButton(</span><span class="s3">&quot;Iterate&quot;</span><span class="s1">);           addAction(iterateButton, { iterate() }); 
+<a name="l97"><span class="ln">97   </span></a>    </span><span class="s0">val </span><span class="s1">resetCameraButton = cp5.addButton(</span><span class="s3">&quot;Reset Camera&quot;</span><span class="s1">);  addAction(resetCameraButton, { resetCamera()}) 
+<a name="l98"><span class="ln">98   </span></a> 
+<a name="l99"><span class="ln">99   </span></a>    </span><span class="s0">def </span><span class="s1">makeButton[A](name:String, action: =&gt; A) = { 
+<a name="l100"><span class="ln">100  </span></a>      </span><span class="s0">val </span><span class="s1">button = cp5.addButton(</span><span class="s3">&quot;Draw &quot;</span><span class="s1">+name); 
+<a name="l101"><span class="ln">101  </span></a>      addAction(button, action); 
+<a name="l102"><span class="ln">102  </span></a>      button; 
+<a name="l103"><span class="ln">103  </span></a>    } 
+<a name="l104"><span class="ln">104  </span></a> 
+<a name="l105"><span class="ln">105  </span></a>    </span><span class="s0">def </span><span class="s1">mkDrawButton(i:Int) = { 
+<a name="l106"><span class="ln">106  </span></a>      </span><span class="s0">val </span><span class="s1">item = curDrawer(i) 
+<a name="l107"><span class="ln">107  </span></a>      </span><span class="s0">val </span><span class="s1">button = makeButton(item.toString, {curDrawer.index = i}) 
+<a name="l108"><span class="ln">108  </span></a>      button.setPosition(</span><span class="s0">new </span><span class="s1">PVector(</span><span class="s4">0</span><span class="s1">, </span><span class="s4">100 </span><span class="s1">+ </span><span class="s4">30 </span><span class="s1">* i)) 
+<a name="l109"><span class="ln">109  </span></a>      button.setAbsolutePosition(</span><span class="s0">new </span><span class="s1">PVector(</span><span class="s4">0</span><span class="s1">, </span><span class="s4">100 </span><span class="s1">+ </span><span class="s4">30 </span><span class="s1">* i)) 
+<a name="l110"><span class="ln">110  </span></a>    } 
+<a name="l111"><span class="ln">111  </span></a>     
+<a name="l112"><span class="ln">112  </span></a>    (</span><span class="s4">0 </span><span class="s1">until curDrawer.size) foreach(mkDrawButton _) 
+<a name="l113"><span class="ln">113  </span></a>  } 
+<a name="l114"><span class="ln">114  </span></a> 
+<a name="l115"><span class="ln">115  </span></a>  </span><span class="s0">def </span><span class="s1">p5HasFocus = cp5.getControllerList.exists(_ </span><span class="s0">match </span><span class="s1">{ 
+<a name="l116"><span class="ln">116  </span></a>    </span><span class="s0">case </span><span class="s1">c: Textfield =&gt; c.isFocus 
+<a name="l117"><span class="ln">117  </span></a>    </span><span class="s0">case </span><span class="s1">_ =&gt; </span><span class="s0">false</span><span class="s1"> 
+<a name="l118"><span class="ln">118  </span></a>  }) 
+<a name="l119"><span class="ln">119  </span></a> 
+<a name="l120"><span class="ln">120  </span></a>  </span><span class="s0">def </span><span class="s1">resetCamera() { 
+<a name="l121"><span class="ln">121  </span></a>    myCam.setScale(width/</span><span class="s4">2</span><span class="s1">); 
+<a name="l122"><span class="ln">122  </span></a>    myCam.setCenter(</span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">); 
+<a name="l123"><span class="ln">123  </span></a>  } 
+<a name="l124"><span class="ln">124  </span></a> 
+<a name="l125"><span class="ln">125  </span></a>  </span><span class="s0">override def </span><span class="s1">setup() { 
+<a name="l126"><span class="ln">126  </span></a>    size(</span><span class="s4">900</span><span class="s1">, </span><span class="s4">500</span><span class="s1">); 
+<a name="l127"><span class="ln">127  </span></a>    rectMode(CORNERS); 
+<a name="l128"><span class="ln">128  </span></a>    myCam = </span><span class="s0">new </span><span class="s1">Camera(</span><span class="s0">this</span><span class="s1">) { 
+<a name="l129"><span class="ln">129  </span></a>      noAutoApply() 
+<a name="l130"><span class="ln">130  </span></a> 
+<a name="l131"><span class="ln">131  </span></a>      </span><span class="s0">def </span><span class="s1">startCamKeys() { 
+<a name="l132"><span class="ln">132  </span></a>        wasd() 
+<a name="l133"><span class="ln">133  </span></a>        arrows() 
+<a name="l134"><span class="ln">134  </span></a>        plusMinus() 
+<a name="l135"><span class="ln">135  </span></a>      } 
+<a name="l136"><span class="ln">136  </span></a> 
+<a name="l137"><span class="ln">137  </span></a>      </span><span class="s0">def </span><span class="s1">stopCamKeys() { 
+<a name="l138"><span class="ln">138  </span></a>        noWasd() 
+<a name="l139"><span class="ln">139  </span></a>        noArrows() 
+<a name="l140"><span class="ln">140  </span></a>        noPlusMinus() 
+<a name="l141"><span class="ln">141  </span></a>      } 
+<a name="l142"><span class="ln">142  </span></a> 
+<a name="l143"><span class="ln">143  </span></a>      </span><span class="s0">override def </span><span class="s1">uiHandle() { 
+<a name="l144"><span class="ln">144  </span></a>        </span><span class="s0">if </span><span class="s1">(p5HasFocus) stopCamKeys() </span><span class="s2">//This is to keep the camera from panning and zooming when you're trying to type in a transformation.</span><span class="s1"> 
+<a name="l145"><span class="ln">145  </span></a>        </span><span class="s0">else </span><span class="s1">startCamKeys() 
+<a name="l146"><span class="ln">146  </span></a>        </span><span class="s0">super</span><span class="s1">.uiHandle() 
+<a name="l147"><span class="ln">147  </span></a>      } 
+<a name="l148"><span class="ln">148  </span></a> 
+<a name="l149"><span class="ln">149  </span></a>      </span><span class="s0">override def </span><span class="s1">toString = </span><span class="s3">&quot;(&quot; </span><span class="s1">+ getCorner.x +</span><span class="s3">&quot;, &quot; </span><span class="s1">+ getCorner.y + </span><span class="s3">&quot; -- &quot; </span><span class="s1">+ getScale+</span><span class="s3">&quot;)&quot;</span><span class="s1"> 
+<a name="l150"><span class="ln">150  </span></a>    } 
+<a name="l151"><span class="ln">151  </span></a>    resetGeometry(); 
+<a name="l152"><span class="ln">152  </span></a>    resetCamera(); 
+<a name="l153"><span class="ln">153  </span></a>    initGui() 
+<a name="l154"><span class="ln">154  </span></a>    tryAddTransform(</span><span class="s3">&quot;T(.25, .25)*S(.5)&quot;</span><span class="s1">) 
+<a name="l155"><span class="ln">155  </span></a>    tryAddTransform(</span><span class="s3">&quot;R(22.5)*T(1.25, .25)&quot;</span><span class="s1">) 
+<a name="l156"><span class="ln">156  </span></a> 
+<a name="l157"><span class="ln">157  </span></a>    textFont(createFont(</span><span class="s3">&quot;Arial&quot;</span><span class="s1">, </span><span class="s4">20</span><span class="s1">)) 
+<a name="l158"><span class="ln">158  </span></a>  } 
+<a name="l159"><span class="ln">159  </span></a> 
+<a name="l160"><span class="ln">160  </span></a>  </span><span class="s2">//Try adding a transform, or display an error message otherwise</span><span class="s1"> 
+<a name="l161"><span class="ln">161  </span></a>  </span><span class="s0">def </span><span class="s1">tryAddTransform(s:String) { 
+<a name="l162"><span class="ln">162  </span></a>    </span><span class="s0">def </span><span class="s1">mkFailString(s: String) { </span><span class="s2">//If the input is bad, create a text box that displays the error.</span><span class="s1"> 
+<a name="l163"><span class="ln">163  </span></a>      </span><span class="s0">val </span><span class="s1">tf = cp5.addTextfield(</span><span class="s3">&quot;fail&quot;</span><span class="s1">, </span><span class="s4">210</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">200</span><span class="s1">, </span><span class="s4">16</span><span class="s1">) 
+<a name="l164"><span class="ln">164  </span></a>      tf.setUserInteraction(</span><span class="s0">false</span><span class="s1">) 
+<a name="l165"><span class="ln">165  </span></a>      tf.setValue(s) 
+<a name="l166"><span class="ln">166  </span></a>      </span><span class="s0">new </span><span class="s1">Thread() { 
+<a name="l167"><span class="ln">167  </span></a>        </span><span class="s0">override def </span><span class="s1">run() { 
+<a name="l168"><span class="ln">168  </span></a>          Thread.sleep(</span><span class="s4">5000</span><span class="s1">) 
+<a name="l169"><span class="ln">169  </span></a>          tf.remove() 
+<a name="l170"><span class="ln">170  </span></a>        } 
+<a name="l171"><span class="ln">171  </span></a>      }.start() 
+<a name="l172"><span class="ln">172  </span></a>    } 
+<a name="l173"><span class="ln">173  </span></a>    parse(s) </span><span class="s0">match </span><span class="s1">{ 
+<a name="l174"><span class="ln">174  </span></a>      </span><span class="s0">case </span><span class="s1">Left(failString) =&gt; mkFailString(failString) </span><span class="s2">//failed</span><span class="s1"> 
+<a name="l175"><span class="ln">175  </span></a>      </span><span class="s0">case </span><span class="s1">Right((mat, str)) =&gt; T += </span><span class="s0">new </span><span class="s1">PMatrix2D(mat) { </span><span class="s2">//Works - add the matrix</span><span class="s1"> 
+<a name="l176"><span class="ln">176  </span></a>        </span><span class="s0">override def </span><span class="s1">toString = str; </span><span class="s2">//gives you a meaningful string representation</span><span class="s1"> 
+<a name="l177"><span class="ln">177  </span></a>      } 
+<a name="l178"><span class="ln">178  </span></a>    } 
+<a name="l179"><span class="ln">179  </span></a>  } 
+<a name="l180"><span class="ln">180  </span></a> 
+<a name="l181"><span class="ln">181  </span></a>  </span><span class="s0">def </span><span class="s1">resetGeometry() { 
+<a name="l182"><span class="ln">182  </span></a>    S = Set(); 
+<a name="l183"><span class="ln">183  </span></a>  } 
+<a name="l184"><span class="ln">184  </span></a> 
+<a name="l185"><span class="ln">185  </span></a>  </span><span class="s0">def </span><span class="s1">resetTransforms() { 
+<a name="l186"><span class="ln">186  </span></a>    T = Set(); 
+<a name="l187"><span class="ln">187  </span></a>  } 
+<a name="l188"><span class="ln">188  </span></a> 
+<a name="l189"><span class="ln">189  </span></a>  </span><span class="s2">/** 
+<a name="l190"><span class="ln">190  </span></a>  * Attempts to parse the given string into a transformation using rules defined in MatrixParser. Returns a Right(PMatrix2D) on success 
+<a name="l191"><span class="ln">191  </span></a>  * and a Left(String) on failure (the string holds the failure message) 
+<a name="l192"><span class="ln">192  </span></a>  */</span><span class="s1"> 
+<a name="l193"><span class="ln">193  </span></a>  </span><span class="s0">def </span><span class="s1">parse(s: String) = MatrixParser.parse(s) 
+<a name="l194"><span class="ln">194  </span></a> 
+<a name="l195"><span class="ln">195  </span></a>  </span><span class="s0">override def </span><span class="s1">draw() { 
+<a name="l196"><span class="ln">196  </span></a>    background(</span><span class="s4">20</span><span class="s1">); 
+<a name="l197"><span class="ln">197  </span></a></span><span class="s2">//    noStroke();</span><span class="s1"> 
+<a name="l198"><span class="ln">198  </span></a>    pushMatrix(); 
+<a name="l199"><span class="ln">199  </span></a>    myCam.apply() 
+<a name="l200"><span class="ln">200  </span></a>    fill(</span><span class="s4">255</span><span class="s1">, </span><span class="s4">128</span><span class="s1">); noStroke; 
+<a name="l201"><span class="ln">201  </span></a>    ellipse(</span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">.1f</span><span class="s1">, </span><span class="s4">.1f</span><span class="s1">) 
+<a name="l202"><span class="ln">202  </span></a>    stroke(</span><span class="s4">255</span><span class="s1">, </span><span class="s4">128</span><span class="s1">); 
+<a name="l203"><span class="ln">203  </span></a>    strokeWeight(</span><span class="s4">0</span><span class="s1">); </span><span class="s2">//This ensures that the stroke weight is always one pixel wide.</span><span class="s1"> 
+<a name="l204"><span class="ln">204  </span></a>    line(-</span><span class="s4">8</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">8</span><span class="s1">, </span><span class="s4">0</span><span class="s1">) 
+<a name="l205"><span class="ln">205  </span></a>    line(</span><span class="s4">0</span><span class="s1">, -</span><span class="s4">8</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">8</span><span class="s1">) 
+<a name="l206"><span class="ln">206  </span></a>    noFill(); 
+<a name="l207"><span class="ln">207  </span></a>    (-</span><span class="s4">5 </span><span class="s1">to </span><span class="s4">3</span><span class="s1">).map(pow(</span><span class="s4">2</span><span class="s1">, _)).foreach(i =&gt; rect(-i, -i, i, i) ) 
+<a name="l208"><span class="ln">208  </span></a></span><span class="s2">//    rect(-1, -1, 1, 1);</span><span class="s1"> 
+<a name="l209"><span class="ln">209  </span></a></span><span class="s2">//    rect(-10, -10, 10, 10);</span><span class="s1"> 
+<a name="l210"><span class="ln">210  </span></a> 
+<a name="l211"><span class="ln">211  </span></a>    noFill(); 
+<a name="l212"><span class="ln">212  </span></a>    stroke(</span><span class="s4">60</span><span class="s1">, </span><span class="s4">230</span><span class="s1">, </span><span class="s4">25</span><span class="s1">); 
+<a name="l213"><span class="ln">213  </span></a>    S foreach (_.render) 
+<a name="l214"><span class="ln">214  </span></a>    popMatrix(); 
+<a name="l215"><span class="ln">215  </span></a> 
+<a name="l216"><span class="ln">216  </span></a>    cp5.draw() 
+<a name="l217"><span class="ln">217  </span></a>    fill(</span><span class="s4">240</span><span class="s1">); 
+<a name="l218"><span class="ln">218  </span></a>    textSize(</span><span class="s4">15</span><span class="s1">) 
+<a name="l219"><span class="ln">219  </span></a>    textAlign(LEFT, BOTTOM) 
+<a name="l220"><span class="ln">220  </span></a>    text(T.mkString(</span><span class="s3">&quot;</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">), </span><span class="s4">0</span><span class="s1">, height) 
+<a name="l221"><span class="ln">221  </span></a></span><span class="s2">//    pollSave(&quot;blogimg-&quot;)</span><span class="s1"> 
+<a name="l222"><span class="ln">222  </span></a>  } 
+<a name="l223"><span class="ln">223  </span></a> 
+<a name="l224"><span class="ln">224  </span></a> 
+<a name="l225"><span class="ln">225  </span></a>  </span><span class="s0">def </span><span class="s1">mouseOnP5 = cp5.getControllerList.exists(p =&gt; { 
+<a name="l226"><span class="ln">226  </span></a>      Methods.isInRange( 
+<a name="l227"><span class="ln">227  </span></a>        mouseVec, 
+<a name="l228"><span class="ln">228  </span></a>        p.getPosition, 
+<a name="l229"><span class="ln">229  </span></a>        PVector.add(p.getPosition, </span><span class="s0">new </span><span class="s1">PVector(p.getWidth, p.getHeight)) 
+<a name="l230"><span class="ln">230  </span></a>      )}) </span><span class="s2">//Tests if the mouse is on a P5 control</span><span class="s1"> 
+<a name="l231"><span class="ln">231  </span></a> 
+<a name="l232"><span class="ln">232  </span></a>  </span><span class="s0">var </span><span class="s1">pressed:Option[PVector] = None 
+<a name="l233"><span class="ln">233  </span></a> 
+<a name="l234"><span class="ln">234  </span></a>  </span><span class="s0">override def </span><span class="s1">mousePressed() { 
+<a name="l235"><span class="ln">235  </span></a>    </span><span class="s0">if</span><span class="s1">(!mouseOnP5) pressed = Some(myCam.model(mouseVec)) 
+<a name="l236"><span class="ln">236  </span></a>  } 
+<a name="l237"><span class="ln">237  </span></a> 
+<a name="l238"><span class="ln">238  </span></a>  </span><span class="s0">override def </span><span class="s1">mouseReleased() { 
+<a name="l239"><span class="ln">239  </span></a>    pressed </span><span class="s0">match </span><span class="s1">{ 
+<a name="l240"><span class="ln">240  </span></a>      </span><span class="s0">case </span><span class="s1">Some(there) =&gt; { 
+<a name="l241"><span class="ln">241  </span></a>        </span><span class="s0">var </span><span class="s1">here = myCam.model(mouseVec) 
+<a name="l242"><span class="ln">242  </span></a>        </span><span class="s0">if</span><span class="s1">(myCam.screenDist(PVector.sub(here, there)).mag() &lt; </span><span class="s4">3</span><span class="s1">)  Unit 
+<a name="l243"><span class="ln">243  </span></a>        </span><span class="s0">else </span><span class="s1">S += </span><span class="s0">new </span><span class="s1">Geometry(curDrawer(there, here)) 
+<a name="l244"><span class="ln">244  </span></a>      } 
+<a name="l245"><span class="ln">245  </span></a>      </span><span class="s0">case </span><span class="s1">None =&gt; Unit 
+<a name="l246"><span class="ln">246  </span></a>    } 
+<a name="l247"><span class="ln">247  </span></a>    pressed = None 
+<a name="l248"><span class="ln">248  </span></a>  } 
+<a name="l249"><span class="ln">249  </span></a> 
+<a name="l250"><span class="ln">250  </span></a>  </span><span class="s0">trait </span><span class="s1">Drawer </span><span class="s0">extends </span><span class="s1">((PVector, PVector) =&gt; (() =&gt; Unit)) { 
+<a name="l251"><span class="ln">251  </span></a>    </span><span class="s0">override def </span><span class="s1">toString = getClass.getSimpleName.split(</span><span class="s3">&quot;</span><span class="s0">\\</span><span class="s3">$&quot;</span><span class="s1">)(</span><span class="s4">1</span><span class="s1">) 
+<a name="l252"><span class="ln">252  </span></a>  } 
+<a name="l253"><span class="ln">253  </span></a> 
+<a name="l254"><span class="ln">254  </span></a>  </span><span class="s0">object </span><span class="s1">Rects </span><span class="s0">extends </span><span class="s1">Drawer { 
+<a name="l255"><span class="ln">255  </span></a>    </span><span class="s0">def </span><span class="s1">apply(v1: PVector, v2: PVector) = () =&gt; { rect(v1.x, v1.y, v2.x, v2.y) } 
+<a name="l256"><span class="ln">256  </span></a>  } 
+<a name="l257"><span class="ln">257  </span></a>  </span><span class="s0">object </span><span class="s1">Circles </span><span class="s0">extends </span><span class="s1">Drawer { 
+<a name="l258"><span class="ln">258  </span></a>    </span><span class="s0">def </span><span class="s1">apply(v1: PVector, v2: PVector) = { 
+<a name="l259"><span class="ln">259  </span></a>      </span><span class="s0">val </span><span class="s1">offset = PVector.sub(v2, v1); 
+<a name="l260"><span class="ln">260  </span></a>      </span><span class="s0">val </span><span class="s1">diam = offset.mag() * </span><span class="s4">2</span><span class="s1"> 
+<a name="l261"><span class="ln">261  </span></a>      () =&gt; { ellipse(v1.x, v1.y, diam, diam) } 
+<a name="l262"><span class="ln">262  </span></a>    } 
+<a name="l263"><span class="ln">263  </span></a>  } 
+<a name="l264"><span class="ln">264  </span></a>  </span><span class="s0">object </span><span class="s1">Lines </span><span class="s0">extends </span><span class="s1">Drawer { 
+<a name="l265"><span class="ln">265  </span></a>    </span><span class="s0">def </span><span class="s1">apply(v1: PVector, v2: PVector) = () =&gt; line(v1.x, v1.y, v2.x, v2.y); 
+<a name="l266"><span class="ln">266  </span></a>  } 
+<a name="l267"><span class="ln">267  </span></a>  </span><span class="s0">object </span><span class="s1">curDrawer </span><span class="s0">extends </span><span class="s1">TravList(Seq(Rects, Circles, Lines)) </span><span class="s0">with </span><span class="s1">Drawer { 
+<a name="l268"><span class="ln">268  </span></a>    </span><span class="s0">def </span><span class="s1">apply(v1: PVector, v2: PVector) = item.apply(v1, v2) 
+<a name="l269"><span class="ln">269  </span></a>    </span><span class="s0">override def </span><span class="s1">toString = item.toString 
+<a name="l270"><span class="ln">270  </span></a>  } 
+<a name="l271"><span class="ln">271  </span></a> 
+<a name="l272"><span class="ln">272  </span></a>  </span><span class="s0">def </span><span class="s1">iterate() { </span><span class="s2">//Move the iteration along.</span><span class="s1"> 
+<a name="l273"><span class="ln">273  </span></a>    S = iterated(); 
+<a name="l274"><span class="ln">274  </span></a>  } 
+<a name="l275"><span class="ln">275  </span></a> 
+<a name="l276"><span class="ln">276  </span></a>  </span><span class="s2">/* 
+<a name="l277"><span class="ln">277  </span></a>  a) you have a set of geometric objects (points, lines, polygons, curves, etc) (named S) 
+<a name="l278"><span class="ln">278  </span></a>  b) you have a set of transformations (rotate, translate, scale, shear, etc) (named T) 
+<a name="l279"><span class="ln">279  </span></a>  c) you apply each transformation to each object in that set, which gives you the set of transformed objects S' (giving you num(S)*num(T) new objects) 
+<a name="l280"><span class="ln">280  </span></a>  d) Use S' as the set S in a) 
+<a name="l281"><span class="ln">281  </span></a>  */</span><span class="s1"> 
+<a name="l282"><span class="ln">282  </span></a>  </span><span class="s0">def </span><span class="s1">iterated(): Set[Geometry] = { 
+<a name="l283"><span class="ln">283  </span></a>    </span><span class="s0">var </span><span class="s1">Sprime: Set[Geometry] = Set() 
+<a name="l284"><span class="ln">284  </span></a>    S.foreach(g =&gt; T.foreach(t =&gt; Sprime += g.transformed(t))) 
+<a name="l285"><span class="ln">285  </span></a>    </span><span class="s0">return </span><span class="s1">Sprime; 
+<a name="l286"><span class="ln">286  </span></a>  } 
+<a name="l287"><span class="ln">287  </span></a> 
+<a name="l288"><span class="ln">288  </span></a>  </span><span class="s0">def </span><span class="s1">vertex(v: PVector) { 
+<a name="l289"><span class="ln">289  </span></a>    vertex(v.x, v.y); 
+<a name="l290"><span class="ln">290  </span></a>  } 
+<a name="l291"><span class="ln">291  </span></a> 
+<a name="l292"><span class="ln">292  </span></a>  </span><span class="s0">class </span><span class="s1">Geometry(</span><span class="s0">val </span><span class="s1">draw:() =&gt; Unit) { 
+<a name="l293"><span class="ln">293  </span></a>    </span><span class="s0">var </span><span class="s1">t = </span><span class="s0">new </span><span class="s1">PMatrix2D; </span><span class="s2">//The transformation this geometry should undertake</span><span class="s1"> 
+<a name="l294"><span class="ln">294  </span></a></span><span class="s2">//    t.scale(width / 2);</span><span class="s1"> 
+<a name="l295"><span class="ln">295  </span></a> 
+<a name="l296"><span class="ln">296  </span></a>    </span><span class="s0">def </span><span class="s1">render() { 
+<a name="l297"><span class="ln">297  </span></a>      pushMatrix(); 
+<a name="l298"><span class="ln">298  </span></a>      applyMatrix(t); 
+<a name="l299"><span class="ln">299  </span></a>      draw(); 
+<a name="l300"><span class="ln">300  </span></a>      popMatrix(); 
+<a name="l301"><span class="ln">301  </span></a>    } 
+<a name="l302"><span class="ln">302  </span></a> 
+<a name="l303"><span class="ln">303  </span></a>    </span><span class="s2">//Return a new geometry that represents this geometry after being transformed by the given matrix.</span><span class="s1"> 
+<a name="l304"><span class="ln">304  </span></a>    </span><span class="s0">def </span><span class="s1">transformed(p: PMatrix2D) = { 
+<a name="l305"><span class="ln">305  </span></a>      </span><span class="s0">val </span><span class="s1">g = </span><span class="s0">new </span><span class="s1">Geometry(draw); 
+<a name="l306"><span class="ln">306  </span></a>      g.t = t.get(); </span><span class="s2">//clone my transform to the new geometry</span><span class="s1"> 
+<a name="l307"><span class="ln">307  </span></a>      g.t.apply(p); </span><span class="s2">//apply the new transform to the new geometry</span><span class="s1"> 
+<a name="l308"><span class="ln">308  </span></a>      g; 
+<a name="l309"><span class="ln">309  </span></a>    } 
+<a name="l310"><span class="ln">310  </span></a> 
+<a name="l311"><span class="ln">311  </span></a>  } 
+<a name="l312"><span class="ln">312  </span></a> 
+<a name="l313"><span class="ln">313  </span></a>}</span></pre>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <!-- charset must remain utf-8 to be handled properly by Processing -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
+
+    <title>Aug03: Built with Processing</title>
+    <LINK TYPE="text/css" REL="stylesheet" HREF="../../sketch.css" />
+    <LINK TYPE="text/css" REL="stylesheet" HREF="table.css" />
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="container">
+
+        <!-- This version plays nicer with older browsers,
+     but requires JavaScript to be enabled.
+     http://java.sun.com/javase/6/docs/technotes/guides/jweb/deployment_advice.html -->
+        <script type="text/javascript" src="http://www.java.com/js/deployJava.js"></script>
+        <script type="text/javascript">
+          var attributes =
+          {code: 'daily/Aug03', archive: 'Aug03.jar', width: 500, height: 500, image: 'loading.gif'};
+          var parameters = { };
+          var version = '1.5';
+          deployJava.runApplet(attributes, parameters, version);
+        </script>
+        <noscript>
+          <div>
+            <!--[if !IE]> -->
+            <object width="500" archive="Aug03.jar" height="500" type="application/x-java-applet" standby="Loading Processing software..." classid="java:daily/Aug03.class">
+
+                <param value="Aug03.jar" name="archive"></param>
+
+                <param value="true" name="mayscript"></param>
+                <param value="true" name="scriptable"></param>
+
+                <param value="loading.gif" name="image"></param>
+                <param value="Loading Processing software..." name="boxmessage"></param>
+                <param value="#FFFFFF" name="boxbgcolor"></param>
+
+                <param value="outer" name="test_string"></param>
+              <!--<![endif]-->
+
+              <!-- For more instructions on deployment,
+   or to update the CAB file listed here, see:
+   http://java.sun.com/javase/6/webnotes/family-clsid.html
+   http://java.sun.com/javase/6/webnotes/install/jre/autodownload.html -->
+              <object width="500" height="500" codebase="http://java.sun.com/update/1.6.0/jinstall-6u20-windows-i586.cab" standby="Loading Processing software..." classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93">
+
+                  <param value="daily/Aug03" name="code"></param>
+                  <param value="Aug03.jar" name="archive"></param>
+
+                  <param value="true" name="mayscript"></param>
+                  <param value="true" name="scriptable"></param>
+
+                  <param value="loading.gif" name="image"></param>
+                  <param value="Loading Processing software..." name="boxmessage"></param>
+                  <param value="#FFFFFF" name="boxbgcolor"></param>
+
+                  <param value="inner" name="test_string"></param>
+
+                <p>
+                  <strong>
+                    This browser does not have a Java Plug-in.
+                      <br></br>
+                    <a href="http://www.java.com/getjava" title="Download Java Plug-in">
+                      Get the latest Java Plug-in here.
+                    </a>
+                  </strong>
+                </p>
+
+              </object>
+
+              <!--[if !IE]> -->
+            </object>
+            <!--<![endif]-->
+
+          </div>
+        </noscript>
+
+      </div>
+
+      <div id="columns">
+        <div class="left column" style="width: 30%;">
+          <h4>Keyboard controls</h4>
+          <pre>'b' - toggle blur
+'p' - toggle posterize
+space - pause
+'r' - reset
+'q' - next group
+'g' - toggle greater than/less than</pre>
+        </div>
+
+        <div class="right column" style="width: 70%;">
+          <h4>What's goin' on eh?</h4>
+		<p>There are things called "Runner"s that move in straight lines, leaving some sort of color behind them until they hit either the edge of the applet, 
+or they hit a color that is within a color distance threshold to their own color. When that happens, the Runner chooses a random direction and tries again. If that fails,
+the Runner teleports to a random location on the screen and tries again. If THAT fails 100 times, the Runner does nothing until the next frame.<br /><br />
+You may choose to apply a blur and/or posterize filter on each frame; interesting figures and combinations arise from their interplay with Runners.
+"Next group" toggles through different groups of runners (black only, black/white, 5 HSB runners). <br /><br />
+The gt/lt toggle defines whether Runners can only move through colors that are <b>greater than/less than</b> the color threshold. e.g. If the distance threshold is .80, 
+then a black Runner can only move on colors that are:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;More than .8 distance from black for "gt".<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Less than .8 distance from black for "lt".<br />
+In general, "gt" means Runners will hit their own color, and "lt" means Runners will hit other colors.<br /><br />
+The color distance metric is somewhat arbitrary; here is a chart showing color distances used in the sketch:<br />
+<table border=0 cellpadding=0 cellspacing=0 width=576 style='border-collapse:
+ collapse;table-layout:fixed;width:432pt'>
+ <col width=64 span=9 style='width:48pt'>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 width=64 style='height:15.0pt;width:48pt'></td>
+  <td class=xl66 width=64 style='width:48pt'>Black</td>
+  <td class=xl65 width=64 style='width:48pt'>Gray</td>
+  <td width=64 style='width:48pt'>White</td>
+  <td class=xl67 width=64 style='width:48pt'>Hue 0.0</td>
+  <td class=xl68 width=64 style='width:48pt'>Hue 0.2</td>
+  <td class=xl69 width=64 style='width:48pt'>Hue 0.4</td>
+  <td class=xl70 width=64 style='width:48pt'>Hue 0.6</td>
+  <td class=xl71 width=64 style='width:48pt'>Hue 0.8</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl66 style='height:15.0pt'>Black</td>
+  <td align=right>0</td>
+  <td align=right>0.866025</td>
+  <td align=right>1.732051</td>
+  <td align=right>1</td>
+  <td align=right>1.280625</td>
+  <td align=right>1.077033</td>
+  <td align=right>1.077033</td>
+  <td align=right>1.280625</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl65 style='height:15.0pt'>Gray</td>
+  <td align=right>0.866025</td>
+  <td align=right>0</td>
+  <td align=right>0.866025</td>
+  <td align=right>0.866025</td>
+  <td align=right>0.768115</td>
+  <td align=right>0.714143</td>
+  <td align=right>0.714143</td>
+  <td align=right>0.768114</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'>White</td>
+  <td align=right>1.732051</td>
+  <td align=right>0.866025</td>
+  <td align=right>0</td>
+  <td align=right>1.414214</td>
+  <td align=right>1.019804</td>
+  <td align=right>1.16619</td>
+  <td align=right>1.16619</td>
+  <td align=right>1.019804</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl67 style='height:15.0pt'>Hue 0.0</td>
+  <td align=right>1</td>
+  <td align=right>0.866025</td>
+  <td align=right>1.414214</td>
+  <td align=right>0</td>
+  <td align=right>1.019804</td>
+  <td align=right>1.469694</td>
+  <td align=right>1.469694</td>
+  <td align=right>1.019804</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'>Hue 0.2</td>
+  <td align=right>1.280625</td>
+  <td align=right>0.768115</td>
+  <td align=right>1.019804</td>
+  <td align=right>1.019804</td>
+  <td align=right>0</td>
+  <td align=right>0.894427</td>
+  <td align=right>1.414214</td>
+  <td align=right>1.414214</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'>Hue 0.4</td>
+  <td align=right>1.077033</td>
+  <td align=right>0.714143</td>
+  <td align=right>1.16619</td>
+  <td align=right>1.469694</td>
+  <td align=right>0.894427</td>
+  <td align=right>0</td>
+  <td align=right>0.848528</td>
+  <td align=right>1.414213</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl70 style='height:15.0pt'>Hue 0.6</td>
+  <td align=right>1.077033</td>
+  <td align=right>0.714143</td>
+  <td align=right>1.16619</td>
+  <td align=right>1.469694</td>
+  <td align=right>1.414214</td>
+  <td align=right>0.848528</td>
+  <td align=right>0</td>
+  <td align=right>0.894427</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl71 style='height:15.0pt'>Hue 0.8</td>
+  <td align=right>1.280625</td>
+  <td align=right>0.768114</td>
+  <td align=right>1.019804</td>
+  <td align=right>1.019804</td>
+  <td align=right>1.414214</td>
+  <td align=right>1.414213</td>
+  <td align=right>0.894427</td>
+  <td align=right>0</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=64 style='width:48pt'></td>
+  <td width=64 style='width:48pt'></td>
+  <td width=64 style='width:48pt'></td>
+  <td width=64 style='width:48pt'></td>
+  <td width=64 style='width:48pt'></td>
+  <td width=64 style='width:48pt'></td>
+  <td width=64 style='width:48pt'></td>
+  <td width=64 style='width:48pt'></td>
+  <td width=64 style='width:48pt'></td>
+ </tr>
+ <![endif]>
+</table>
+<br /></p>
+        </div>
+      </div>
+<br />
+	<p>Inspired by the Lenny Explorer example in <a href="http://www.toxiclibs.org">toxiclibs</a>.</p>
+      <p align="left">Source code:<a href="Aug03.scala">Aug03</a></p>
+      <p>Built with <a href="http://processing.org" title="Processing.org">Processing</a></p>
+      <p><a href="../..">Back to sketches</a></p>
+    </div>
+  </body>
+</html>
