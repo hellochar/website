@@ -8,5 +8,4 @@
       .row.thumbnails
         - arr.each do |sketch|
           .span3
-            %ul
-              = render 'p5wscala/thumbnail', :sketch => sketch
+            %ul= render 'p5wscala/thumbnail', :sketch => sketch

@@ -4,11 +4,6 @@ a, a:visited, a:hover, a:active {
   color: inherit;
 }
 
-// Give some breathing room to the rows
-.row {
-  margin-top: 10px;
-}
-
 .page-header {
   border-bottom: 2px solid #ddd;
   padding-bottom: 0px;
@@ -35,6 +30,7 @@ a, a:visited, a:hover, a:active {
 // The section header is at the top of each big project in the front page
 .section-header {
   border-bottom: 1px solid #eee; 
+  margin-bottom: 20px;
 }
 
 // The about-me is a little paragraph at the top of the page
@@ -46,26 +42,11 @@ a, a:visited, a:hover, a:active {
 }
 
 // A little thing that pops up on the left-side of the screen
-$inset-top: 140px;
 .left-inset {
   float: left;
-  left: 0px;
-  top: $inset-top;
-  a.thumbnail {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-left: none;
-  }
 }
 .right-inset {
   float: right;
-  right: 0px;
-  top: $inset-top;
-  a.thumbnail {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-right: none;
-  }
 }
 
 // Styling for the custom background

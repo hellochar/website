@@ -4,13 +4,13 @@
   <title>#{sketch.name.capitalize} - p5wscala - Xiaohan Zhang</title>
 
 - content_for :content do 
-  .container
+  .container 
     = yield :applet 
     %p
       Source: <a href="#{sketch.sourcefile}"><i class='icon-file'></i> #{sketch.name}</a>.
       Built with <a href="http://processing.org" title="Processing.org">Processing</a>.
-  .p5wscala
-    .left-inset= render 'p5wscala/thumbnail', :sketch => sketch.previous
-    .right-inset= render 'p5wscala/thumbnail', :sketch => sketch.next
+    .p5wscala
+      .left-inset= render 'p5wscala/thumbnail', :sketch => sketch.previous
+      .right-inset= render 'p5wscala/thumbnail', :sketch => sketch.next
 
 = render :template => 'layouts/application'
