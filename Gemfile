@@ -10,6 +10,7 @@ gem 'haml'
 gem 'sass'
 gem 'pry'
 gem 'nokogiri'
+gem 'thin'
 
 
 # Gems used only for assets and not required
